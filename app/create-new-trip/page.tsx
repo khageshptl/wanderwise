@@ -7,8 +7,8 @@ function CreateNewTrip() {
             <div>
                 <ChatBox />
             </div>
-            <div>
-
+            <div className='text-center'>
+                Itinerary will be displayed here
             </div>
         </div>
     )

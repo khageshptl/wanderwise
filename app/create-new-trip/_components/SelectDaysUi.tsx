@@ -3,7 +3,7 @@ import React from "react";
 
 type SelectDaysUiProps = {
   initial?: number;
-  onConfirm?: (value: string) => void; 
+  onConfirm?: (value: string) => void;
 };
 
 export default function SelectDaysUi({ initial = 1, onConfirm }: SelectDaysUiProps) {
@@ -15,7 +15,7 @@ export default function SelectDaysUi({ initial = 1, onConfirm }: SelectDaysUiPro
   const confirm = () => onConfirm?.(String(count));
 
   return (
-    <div className="max-w-md w-full bg-white rounded-2xl p-6 shadow-md text-center">
+    <div className='flex flex-col items-center justify-center mt-6 p-6 bg-white rounded-2xl mb-2'>
       <h3 className="text-lg font-semibold mb-4">
         How many days do you want to travel?
       </h3>
@@ -28,7 +28,7 @@ export default function SelectDaysUi({ initial = 1, onConfirm }: SelectDaysUiPro
             disabled={count === 1}
             className={
               "w-12 h-12 rounded-full border flex items-center justify-center text-2xl transition " +
-              (count === 1 ? "opacity-40 cursor-not-allowed" : "hover:scale-105 hover:shadow-lg")
+              (count === 1 ? "opacity-40 cursor-not-allowed" : "hover:shadow-lg")
             }
           >
             ➖
@@ -42,7 +42,7 @@ export default function SelectDaysUi({ initial = 1, onConfirm }: SelectDaysUiPro
           <button
             aria-label="increase days"
             onClick={increase}
-            className="w-12 h-12 rounded-full border flex items-center justify-center text-2xl hover:shadow-lg hover:scale-105 transition"
+            className="w-12 h-12 rounded-full border flex items-center justify-center text-2xl hover:shadow-lg transition"
           >
             ➕
           </button>
@@ -50,7 +50,7 @@ export default function SelectDaysUi({ initial = 1, onConfirm }: SelectDaysUiPro
 
         <button
           onClick={confirm}
-          className="mt-2 bg-primary hover:shadow-lg hover:scale-105 text-white px-6 py-2 rounded-full transition-shadow shadow-sm"
+          className="mt-2 bg-primary hover:shadow-lg hover:shadow-primary/65 text-white px-6 py-2 rounded-full transition-shadow shadow-sm"
         >
           Confirm
         </button>
