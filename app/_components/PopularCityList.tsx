@@ -42,7 +42,7 @@ const DummyContent = () => {
                             height="500"
                             width="500"
                             className="md:w-1/2 md:h-1/2 h-full w-full mx-auto object-contain"
-                        />
+                            />
                     </div>
                 );
             })}
@@ -51,6 +51,30 @@ const DummyContent = () => {
 };
 
 const data = [
+    {
+        category: "London, UK",
+        title: "Classic and Modern - Big Ben, London Eye, Thames",
+        src: "https://images.unsplash.com/photo-1582027013518-0e9d9633a2d5?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bG9uZG9uJTIwZXllfGVufDB8MXwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=600",
+        content: <DummyContent />,
+    },
+    {
+        category: "Cape Town, South Africa",
+        title: "Adventure Awaits - Table Mountain & Coastal Beauty",
+        src: "https://plus.unsplash.com/premium_photo-1697729867696-5a9b4b995e9f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Q2FwZSUyMFRvd24lMkMlMjBTb3V0aCUyMEFmcmljYXxlbnwwfDF8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600",
+        content: <DummyContent />,
+    },
+    {
+        category: "Bali, Indonesia",
+        title: "Island Paradise - Temples, Rice Terraces, and Beaches",
+        src: "https://images.unsplash.com/photo-1564981447395-903d78d49a28?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YmFsaSUyMGJlYWNofGVufDB8MXwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=600",
+        content: <DummyContent />,
+    },
+    {
+        category: "Santorini, Greece",
+        title: "White and Blue Bliss - Sunsets, Cliffs & Aegean Views",
+        src: "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8U2FudG9yaW5pJTJDJTIwR3JlZWNlfGVufDB8MXwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=600",
+        content: <DummyContent />,
+    },
     {
         category: "Paris, France",
         title: "Explore the City of Lights - Eiffel Tower, Louvre & more",
@@ -85,30 +109,6 @@ const data = [
         category: "Sydney, Australia",
         title: "Harbour Vibes - Opera House, Bondi Beach & Wildlife",
         src: "https://images.unsplash.com/photo-1704788623366-8cd4d7285e60?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjd8fHN5ZG5leXxlbnwwfDF8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600",
-        content: <DummyContent />,
-    },
-    {
-        category: "Cape Town, South Africa",
-        title: "Adventure Awaits - Table Mountain & Coastal Beauty",
-        src: "https://plus.unsplash.com/premium_photo-1697729867696-5a9b4b995e9f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Q2FwZSUyMFRvd24lMkMlMjBTb3V0aCUyMEFmcmljYXxlbnwwfDF8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600",
-        content: <DummyContent />,
-    },
-    {
-        category: "Bali, Indonesia",
-        title: "Island Paradise - Temples, Rice Terraces, and Beaches",
-        src: "https://images.unsplash.com/photo-1564981447395-903d78d49a28?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YmFsaSUyMGJlYWNofGVufDB8MXwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=600",
-        content: <DummyContent />,
-    },
-    {
-        category: "London, UK",
-        title: "Classic and Modern - Big Ben, London Eye, Thames",
-        src: "https://images.unsplash.com/photo-1582027013518-0e9d9633a2d5?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bG9uZG9uJTIwZXllfGVufDB8MXwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=600",
-        content: <DummyContent />,
-    },
-    {
-        category: "Santorini, Greece",
-        title: "White and Blue Bliss - Sunsets, Cliffs & Aegean Views",
-        src: "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8U2FudG9yaW5pJTJDJTIwR3JlZWNlfGVufDB8MXwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=600",
         content: <DummyContent />,
     },
 ];

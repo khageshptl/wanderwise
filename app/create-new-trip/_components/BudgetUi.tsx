@@ -5,7 +5,7 @@ export const SelectBudgetOptions = [
     {
         id: 1,
         title: 'Cheap',
-        desc: 'Stay conscious of costs',
+        desc: 'Keep costs low',
         icon: '💵',
         color: 'bg-green-100 text-green-600',
         after: 'shadow-blue-300'
@@ -13,7 +13,7 @@ export const SelectBudgetOptions = [
     {
         id: 2,
         title: 'Moderate',
-        desc: 'Keep cost on the average side',
+        desc: 'Keep cost a bit average',
         icon: '💰',
         color: 'bg-yellow-100 text-yellow-600',
         after: 'shadow-blue-300'
@@ -21,7 +21,7 @@ export const SelectBudgetOptions = [
     {
         id: 3,
         title: 'Luxury',
-        desc: 'Don’t worry about cost',
+        desc: 'Don\'t worry about cost',
         icon: '💸',
         color: 'bg-purple-100 text-purple-600',
         after: 'shadow-blue-300'

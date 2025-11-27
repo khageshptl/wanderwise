@@ -5,7 +5,7 @@ import React from 'react'
 export const SelectTravelesList = [
     {
         id: 1,
-        title: 'Just Me',
+        title: 'Me',
         desc: 'A sole traveles in exploration',
         icon: '✈️',
         people: '1',
@@ -13,7 +13,7 @@ export const SelectTravelesList = [
     },
     {
         id: 2,
-        title: 'A Couple',
+        title: 'Couple',
         desc: 'Two traveles in tandem',
         icon: '💍',
         people: '2 People',

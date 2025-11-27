@@ -56,7 +56,7 @@ function Hero() {
                 </div>
                 <div className='flex justify-center gap-5'>
                     {suggestions.map((suggestion, index) => (
-                        <div key={index} className='flex items-center border rounded-full p-2 hover:scale-105 transition-all cursor-pointer hover:text-primary'>
+                        <div key={index} className='flex items-center border rounded-full p-2 hover:scale-105 transition-all cursor-pointer hover:text-primary' onClick={() => onSend()}>
                             {suggestion.icon}
                             <h2 className='text-sm'>&nbsp;{suggestion.title}</h2>
                         </div>

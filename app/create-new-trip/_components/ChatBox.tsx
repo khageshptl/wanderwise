@@ -15,7 +15,7 @@ import { tr } from 'motion/react-client';
 import { mutation } from '@/convex/_generated/server';
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
-import { useUserDetails } from '@/app/Provider';
+import { useTripDetails, useUserDetails } from '@/app/Provider';
 import { v4 as uuid } from 'uuid';
 import { useUser } from '@clerk/nextjs';
 
@@ -25,15 +25,50 @@ type Message = {
     ui?: string
 }
 
+export type Itinerary = {
+    day: number;
+    day_plan: string;
+    best_time_to_visit_day: string;
+    activities: Activity[];
+}
+
 export type TripInfo = {
     budget: string,
     destination: string
     duration: string,
     group_size: string,
     origin: string,
-    hotels: any,
-    itinerary: any
+    hotels: Hotel[],
+    itinerary: Itinerary[]
 }
+
+export type Hotel = {
+    hotel_name: string;
+    hotel_address: string;
+    price_per_night: string;
+    hotel_image_url: string;
+    geo_coordinates: {
+        latitude: number,
+        longitude: number
+    };
+    rating: number;
+    description: string;
+}
+
+export type Activity = {
+    place_name: string;
+    place_details: string;
+    place_image_url: string;
+    geo_coordinates: {
+        latitude: number,
+        longitude: number
+    };
+    place_address: string;
+    ticket_pricing: string;
+    time_travel_each_location: string;
+    best_time_to_visit: string;
+};
+
 
 function ChatBox() {
 
@@ -44,6 +79,9 @@ function ChatBox() {
     const [tripDetail, setTripDetail] = useState<TripInfo>();
     const saveTripDetail = useMutation(api.tripDetail.CreateTripDetail);
     const { userDetails, setUserDetails } = useUserDetails();
+
+    //@ts-ignore
+    const {tripDetailInfo, setTripDetailInfo} = useTripDetails();
 
     console.log(userDetails?._id);
     const onSend = async () => {
@@ -74,14 +112,17 @@ function ChatBox() {
 
         if (isFinal) {
             setTripDetail(result?.data?.trip_plan);
+
+            setTripDetailInfo(result?.data?.trip_plan);
+            setIsFinal(false);
             const tripId = uuid();
-            
+
             if (!userDetails?._id) {
                 console.error("User ID is missing. Cannot save trip detail.");
                 setLoading(false);
                 return;
             }
-            
+
             await saveTripDetail({
                 tripDetail: result?.data?.trip_plan,
                 tripId: tripId,
@@ -125,7 +166,7 @@ function ChatBox() {
     }, [isFinal])
 
     return (
-        <div className='h-[79vh] flex flex-col'>
+        <div className='h-[82.5vh] flex flex-col bg-gray-50 rounded-2xl p-3'>
             {/* Display messages */}
             {messages.length === 0 &&
                 <EmptyBoxState onSelectOption={(v: string) => { setUserInput(v); onSend() }} />
