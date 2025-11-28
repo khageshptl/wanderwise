@@ -15,7 +15,7 @@ export default function SelectDaysUi({ initial = 1, onConfirm }: SelectDaysUiPro
   const confirm = () => onConfirm?.(String(count));
 
   return (
-    <div className='flex flex-col items-center justify-center mt-6 p-6 bg-white rounded-2xl mb-2'>
+    <div className='flex flex-col items-center justify-center mt-6 p-6 bg-card rounded-2xl mb-2'>
       <h3 className="text-lg font-semibold mb-4">
         How many days do you want to travel?
       </h3>
@@ -36,7 +36,7 @@ export default function SelectDaysUi({ initial = 1, onConfirm }: SelectDaysUiPro
 
           <div className="text-center">
             <div className="text-2xl font-bold">{count}</div>
-            <div className="text-sm text-gray-500">{count === 1 ? "Day" : "Days"}</div>
+            <div className="text-sm text-muted-foreground">{count === 1 ? "Day" : "Days"}</div>
           </div>
 
           <button

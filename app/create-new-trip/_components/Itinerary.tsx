@@ -406,7 +406,7 @@ function Itinerary() {
                         width={800} height={800} className='w-full h-full object-cover rounded-3xl'
                     /> */}
 
-                <h2 className='flex gap-2 text-3xl text-white items-center absolute bottom-10 left-10'> <ArrowLeft/> Getting to know you to build perfect Trip here...</h2>
+                {/* <h2 className='flex gap-2 text-3xl text-white items-center absolute bottom-10 left-10'> <ArrowLeft/> Getting to know you to build perfect Trip here...</h2> */}
 
             </div>
             }

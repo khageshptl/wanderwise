@@ -4,6 +4,7 @@ import "./globals.css";
 import Provider from "./Provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ConvexClientProvider } from "./ConvexClientProvider";
+import { ThemeProvider } from "./ThemeProvider";
 
 const jost = Jost({
   subsets: ["latin"],
@@ -27,9 +28,16 @@ export default function RootLayout({
         <body
           className={jost.className}
         >
-          <ConvexClientProvider>
-            {children}
-          </ConvexClientProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ConvexClientProvider>
+              {children}
+            </ConvexClientProvider>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

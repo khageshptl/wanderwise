@@ -166,7 +166,7 @@ function ChatBox() {
     }, [isFinal])
 
     return (
-        <div className='h-[82.5vh] flex flex-col bg-gray-50 rounded-2xl p-3'>
+        <div className='h-[82.5vh] flex flex-col bg-muted/50 dark:bg-muted/20 rounded-2xl p-3'>
             {/* Display messages */}
             {messages.length === 0 &&
                 <EmptyBoxState onSelectOption={(v: string) => { setUserInput(v); onSend() }} />
@@ -175,13 +175,13 @@ function ChatBox() {
                 {messages.map((msg: Message, index) => (
                     msg.role === 'user' ?
                         <div className='flex justify-end mt-2' key={index}>
-                            <div className='max-w-lg bg-primary text-white px-4 py-2 rounded-3xl'>
+                            <div className='max-w-lg bg-primary text-primary-foreground px-4 py-2 rounded-3xl'>
                                 {msg.content}
                             </div>
                         </div>
                         :
                         <div className='flex justify-start mt-2' key={index}>
-                            <div className='max-w-lg bg-gray-100 text-black px-4 py-2 rounded-3xl'>
+                            <div className='max-w-lg bg-muted dark:bg-muted/50 text-foreground px-4 py-2 rounded-3xl'>
                                 {/* {msg.content} */}
                                 {typeof msg.content === "object" ? (
                                     <pre className="whitespace-pre-wrap text-sm">
@@ -195,7 +195,7 @@ function ChatBox() {
                         </div>
                 ))}
                 {loading && <div className='flex justify-start mt-2'>
-                    <div className='max-w-lg bg-gray-100 text-black px-4 py-2 rounded-3xl'>
+                    <div className='max-w-lg bg-muted dark:bg-muted/50 text-foreground px-4 py-2 rounded-3xl'>
                         <Loader className='animate-spin' />
                     </div>
                 </div>}
