@@ -14,32 +14,32 @@ type Props = {
 
 function HotelCardItem({ hotel }: Props) {
 
-    const[photoUrl, setPhotoUrl] = useState<string>();
+    const [photoUrl, setPhotoUrl] = useState<string>();
 
-    useEffect(()=>{
-        hotel&&getGooglePlaceDetail();
+    useEffect(() => {
+        hotel && getGooglePlaceDetail();
     }, [hotel])
 
-    const getGooglePlaceDetail = async() => {
+    const getGooglePlaceDetail = async () => {
         const result = await axios.post('/api/google-place', {
             placeName: hotel?.hotel_name
         });
-        if(result?.data?.err) return;
+        if (result?.data?.err) return;
         setPhotoUrl(result.data);
     }
 
     return (
-        <div className='flex flex-col gap-1 m-2 p-2 rounded-xl hover:shadow-lg hover:shadow-primary/30 cursor-pointer hover:scale-105 transition-transform duration-300 ease-in'>
-            <Image src={photoUrl?photoUrl:'/scene.jpg'} alt='place-image' width={400} height={200} className='rounded-xl shadow object-cover mb-2 ' />
+        <div className='flex flex-col gap-1 m-2 p-2 rounded-xl glass-card cursor-pointer'>
+            <Image src={photoUrl ? photoUrl : '/scene.jpg'} alt='place-image' width={400} height={200} className='rounded-xl shadow object-cover mb-2 ' />
             <h2 className='font-semibold text-lg'>{hotel?.hotel_name}</h2>
             <h2 className='text-muted-foreground'>{hotel?.hotel_address}</h2>
             <div className='flex justify-between items-center'>
-                <p className='flex gap-2 text-green-700'><Wallet />{hotel.price_per_night}</p>
+                <p className='flex gap-2 text-green-700 dark:text-green-400'><Wallet />{hotel.price_per_night}</p>
                 <p className='text-yellow-400 flex gap-2'><Star />{hotel?.rating}</p>
             </div>
             <Link href={'https://www.google.com/maps/search/?api=1&query=' + hotel?.hotel_name} target='_blank' >
                 <div className='w-full mt-1'>
-                    <Button variant='outline' className='w-full hover:text-primary justify-center'>
+                    <Button variant='outline' className='w-full hover:text-primary justify-center glass-chip'>
                         View <ExternalLinkIcon className='ml-2' />
                     </Button>
                 </div>

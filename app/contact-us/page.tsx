@@ -49,7 +49,7 @@ function ContactUs() {
             {/* Header Section */}
             <div className='text-center mb-12 mt-8'>
                 <h1 className='font-bold text-4xl md:text-5xl mb-4'>
-                    Get in <span className='text-primary'>Touch</span>
+                    Get in <span className='gradient-text'>Touch</span>
                 </h1>
                 <p className='text-muted-foreground text-lg max-w-2xl mx-auto'>
                     Have a question or need help? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
@@ -68,7 +68,7 @@ function ContactUs() {
 
                     <div className='space-y-6'>
                         {/* Email */}
-                        <div className='flex gap-4 p-4 rounded-xl border hover:shadow-lg hover:shadow-primary/10 hover:scale-105 transition-all duration-300'>
+                        <div className='flex gap-4 p-4 rounded-xl glass-card cursor-pointer'>
                             <div className='bg-primary/10 p-3 rounded-lg'>
                                 <Mail className='h-6 w-6 text-primary' />
                             </div>
@@ -80,7 +80,7 @@ function ContactUs() {
                         </div>
 
                         {/* Phone */}
-                        <div className='flex gap-4 p-4 rounded-xl border hover:shadow-lg hover:shadow-primary/10 hover:scale-105 transition-all duration-300'>
+                        <div className='flex gap-4 p-4 rounded-xl glass-card cursor-pointer'>
                             <div className='bg-primary/10 p-3 rounded-lg'>
                                 <Phone className='h-6 w-6 text-primary' />
                             </div>
@@ -92,7 +92,7 @@ function ContactUs() {
                         </div>
 
                         {/* Address */}
-                        <div className='flex gap-4 p-4 rounded-xl border hover:shadow-lg hover:shadow-primary/10 hover:scale-105 transition-all duration-300'>
+                        <div className='flex gap-4 p-4 rounded-xl glass-card cursor-pointer'>
                             <div className='bg-primary/10 p-3 rounded-lg'>
                                 <MapPin className='h-6 w-6 text-primary' />
                             </div>
@@ -105,7 +105,7 @@ function ContactUs() {
                     </div>
 
                     {/* Social/Additional Info */}
-                    <div className='mt-8 p-6 rounded-2xl bg-primary/5 border border-primary/20'>
+                    <div className='mt-8 p-6 rounded-2xl glass-container'>
                         <div className='flex items-center gap-3 mb-2'>
                             <MessageSquare className='h-5 w-5 text-primary' />
                             <h3 className='font-semibold'>Quick Response</h3>
@@ -117,9 +117,9 @@ function ContactUs() {
                 </div>
 
                 {/* Contact Form */}
-                <div className='bg-card border rounded-2xl p-6 md:p-8 shadow-lg'>
+                <div className='glass-container rounded-2xl p-6 md:p-8 shadow-lg'>
                     <h2 className='font-bold text-2xl mb-6'>Send us a Message</h2>
-                    
+
                     <form onSubmit={handleSubmit} className='space-y-5'>
                         {/* Name */}
                         <div>
@@ -134,7 +134,7 @@ function ContactUs() {
                                 value={formData.name}
                                 onChange={handleChange}
                                 required
-                                className='w-full'
+                                className='w-full glass-input'
                             />
                         </div>
 
@@ -151,7 +151,7 @@ function ContactUs() {
                                 value={formData.email}
                                 onChange={handleChange}
                                 required
-                                className='w-full'
+                                className='w-full glass-input'
                             />
                         </div>
 
@@ -168,7 +168,7 @@ function ContactUs() {
                                 value={formData.subject}
                                 onChange={handleChange}
                                 required
-                                className='w-full'
+                                className='w-full glass-input'
                             />
                         </div>
 
@@ -185,7 +185,7 @@ function ContactUs() {
                                 onChange={handleChange}
                                 required
                                 rows={6}
-                                className='w-full resize-none'
+                                className='w-full resize-none glass-input'
                             />
                         </div>
 
@@ -193,7 +193,7 @@ function ContactUs() {
                         <Button
                             type="submit"
                             disabled={isSubmitting}
-                            className='w-full mt-2'
+                            className='w-full mt-2 glass-button text-primary-foreground'
                         >
                             {isSubmitting ? (
                                 'Sending...'
@@ -207,14 +207,14 @@ function ContactUs() {
 
                         {/* Status Messages */}
                         {submitStatus === 'success' && (
-                            <div className='p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200'>
-                                <p className='text-sm font-medium'>Message sent successfully! We'll get back to you soon.</p>
+                            <div className='p-4 rounded-lg glass-container border border-green-500/30'>
+                                <p className='text-sm font-medium text-green-600 dark:text-green-400'>Message sent successfully! We'll get back to you soon.</p>
                             </div>
                         )}
 
                         {submitStatus === 'error' && (
-                            <div className='p-4 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive'>
-                                <p className='text-sm font-medium'>Something went wrong. Please try again later.</p>
+                            <div className='p-4 rounded-lg glass-container border border-destructive/30'>
+                                <p className='text-sm font-medium text-destructive'>Something went wrong. Please try again later.</p>
                             </div>
                         )}
                     </form>
@@ -223,13 +223,13 @@ function ContactUs() {
 
             {/* Additional Section */}
             <div className='mt-16 text-center'>
-                <div className='inline-block p-6 rounded-2xl border bg-card'>
+                <div className='inline-block p-6 rounded-2xl glass-card'>
                     <h3 className='font-semibold text-lg mb-2'>Need Help Planning Your Trip?</h3>
                     <p className='text-muted-foreground text-sm mb-4'>
                         Our AI-powered trip planner is ready to help you create the perfect itinerary.
                     </p>
                     <Link href='/create-new-trip'>
-                        <Button>Start Planning</Button>
+                        <Button className='glass-button text-primary-foreground'>Start Planning</Button>
                     </Link>
                 </div>
             </div>

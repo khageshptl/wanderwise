@@ -9,8 +9,8 @@ export function PopularCityList() {
     ));
 
     return (
-        <div className="w-full h-full pt-20">
-            <h2 className="max-w-7xl pl-4 mx-auto text-xl md:text-3xl font-bold text-neutral-800 dark:text-neutral-200 font-sans">
+        <div className="w-full h-full pt-10 relative overflow-hidden target">
+            <h2 className="max-w-7xl pl-4 mx-auto text-xl md:text-3xl font-bold gradient-text font-sans z-10">
                 Popular Destination to Visit
             </h2>
             <Carousel items={cards} />
@@ -42,7 +42,7 @@ const DummyContent = () => {
                             height="500"
                             width="500"
                             className="md:w-1/2 md:h-1/2 h-full w-full mx-auto object-contain"
-                            />
+                        />
                     </div>
                 );
             })}

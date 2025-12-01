@@ -81,7 +81,7 @@ function ChatBox() {
     const { userDetails, setUserDetails } = useUserDetails();
 
     //@ts-ignore
-    const {tripDetailInfo, setTripDetailInfo} = useTripDetails();
+    const { tripDetailInfo, setTripDetailInfo } = useTripDetails();
 
     console.log(userDetails?._id);
     const onSend = async () => {
@@ -208,7 +208,7 @@ function ChatBox() {
                         onChange={(event) => setUserInput(event.target.value ?? '')}
                         value={userInput}
                     />
-                    <Button size={'icon'} className='absolute bottom-6 right-6' onClick={() => onSend()}>
+                    <Button size={'icon'} className='absolute bottom-6 right-6 bg-neutral-900 text-white dark:bg-neutral-100 dark:text-black hover:bg-neutral-800 dark:hover:bg-neutral-200 glass-button text-primary-foreground' onClick={() => onSend()}>
                         <Send className='h-3 w-3' />
                     </Button>
                 </div>

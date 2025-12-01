@@ -78,15 +78,15 @@ export default function Header() {
                     {mounted ? (
                         !user ? (
                             <SignInButton mode="modal">
-                                <Button className="glass-button">Get started</Button>
+                                <Button className="glass-button text-primary-foreground">Get started</Button>
                             </SignInButton>
                         ) : path === '/create-new-trip' ? (
                             <Link href={'/my-trips'}>
-                                <Button className="glass-button">My Trips</Button>
+                                <Button className="glass-button text-primary-foreground">My Trips</Button>
                             </Link>
                         ) : (
                             <Link href={'/create-new-trip'}>
-                                <Button className="glass-button">Create New Trip</Button>
+                                <Button className="glass-button text-primary-foreground">Create New Trip</Button>
                             </Link>
                         )
                     ) : (

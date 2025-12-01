@@ -4,59 +4,89 @@ import { HeroVideoDialog } from '@/components/ui/hero-video-dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { useUser } from '@clerk/nextjs';
 import { Globe2Icon, Send } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { use, useEffect, useState } from 'react';
 
 export const suggestions = [
     {
-        title:"Create New Trip",
-        icon:<Globe2Icon className='text-blue-400 h-5 w-5' />
+        title: "Create New Trip",
+        icon: <Globe2Icon className='text-blue-400 h-5 w-5' />
     },
     {
-        title:"Inspire me Where to go",
-        icon:<Globe2Icon className='text-green-400 h-5 w-5' />
+        title: "Inspire me Where to go",
+        icon: <Globe2Icon className='text-green-400 h-5 w-5' />
     },
     {
-        title:"Discover Hidden Gems",
-        icon:<Globe2Icon className='text-red-400 h-5 w-5' />
+        title: "Discover Hidden Gems",
+        icon: <Globe2Icon className='text-red-400 h-5 w-5' />
     },
     {
-        title:"Adventure Destination",
-        icon:<Globe2Icon className='text-yellow-400 h-5 w-5' />
+        title: "Adventure Destination",
+        icon: <Globe2Icon className='text-yellow-400 h-5 w-5' />
     },
-    
+
 ]
 
 function Hero() {
 
-    const { user }=useUser();
-    const router=useRouter();
-    console.log(user);
-    const onSend=()=>{
-        if(!user){
+    const { user } = useUser();
+    const router = useRouter();
+    const { theme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
+    // console.log(user);
+    const onSend = () => {
+        if (!user) {
             router.push('/sign-in')
             return;
         }
         router.push('/create-new-trip');
     }
 
+    const videoSrc = mounted && theme === 'dark' ? '/HeroDark3.mp4' : '/HeroLight.mp4';
+    const blurEffect = mounted && theme === 'dark' ? '' : 'blur-xs';
     return (
-        <div className='mt-24 w-full flex justify-center'>
-            <div className='max-w-3xl w-full text-center space-y-6'>
-                <h1 className='text-l md:text-4xl font-bold'>Hey, i'm your personal <span className='text-primary'>Trip Planner</span></h1>
-                <p>Tell me what you want, and I'll handle the rest: Flights, Hotels, Trip Planning - All in Seconds</p>
+        <div className='pt-24 w-full flex justify-center pb-49 relative overflow-hidden target'>
+            <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className= {`absolute inset-0 w-full h-full object-cover z-0 pointer-events-none ${blurEffect}`}
+                key={videoSrc}
+            >
+                <source src={videoSrc} type="video/mp4" />
+            </video>
+            <div className='max-w-3xl w-full text-center space-y-6 relative'>
+                <h1 className='text-l md:text-4xl font-bold'>
+                    Hey, i'm your personal <span className='gradient-text'>Trip Planner</span>
+                </h1>
+                <p className='text-foreground/80'>
+                    Tell me what you want, and I'll handle the rest: Flights, Hotels, Trip Planning - All in Seconds
+                </p>
                 <div>
-                    <div className='border rounded-2xl p-4 shadow-xl relative'>
-                        <Textarea placeholder='Create a Trip for Paris form New York'
-                            className='w-full h-28 bg-transparent border-none focus-visible:ring-0 shadow-none resize-none' />
-                        <Button size={'icon'} className='absolute bottom-6 right-6' onClick={()=>onSend()}>
-                            <Send className='h-3 w-3'/>
+                    <div className='glass-container rounded-2xl p-4 shadow-xl relative'>
+                        <Textarea
+                            placeholder='Create a Trip for Paris from New York'
+                            className='w-full h-28 bg-transparent border-none focus-visible:ring-0 shadow-none resize-none text-foreground placeholder:text-foreground/50'
+                        />
+                        <Button
+                            size={'icon'}
+                            className='absolute bottom-6 right-6 glass-button text-primary-foreground'
+                            onClick={() => onSend()}
+                        >
+                            <Send className='h-3 w-3' />
                         </Button>
                     </div>
                 </div>
-                <div className='flex justify-center gap-5'>
+                <div className='flex justify-center gap-5 flex-wrap'>
                     {suggestions.map((suggestion, index) => (
-                        <div key={index} className='flex items-center border rounded-full p-2 hover:scale-105 transition-all cursor-pointer hover:text-primary' onClick={() => onSend()}>
+                        <div
+                            key={index}
+                            className='flex items-center glass-chip rounded-full p-2 px-4 cursor-pointer'
+                            onClick={() => onSend()}
+                        >
                             {suggestion.icon}
                             <h2 className='text-sm'>&nbsp;{suggestion.title}</h2>
                         </div>

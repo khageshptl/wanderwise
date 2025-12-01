@@ -18,7 +18,7 @@ function Provider({
   const CreateUser = useMutation(api.user.CreateNewUser);
 
   const [userDetails, setUserDetails] = useState<any>();
-  
+
   const [tripDetailInfo, setTripDetailInfo] = useState<TripInfo | null>(null);
 
   const { user } = useUser();
@@ -39,12 +39,15 @@ function Provider({
     }
   }
   return (
-    <UserDetailsContext.Provider value={{userDetails, setUserDetails}}>
-      <TripDetailContext.Provider value={{tripDetailInfo, setTripDetailInfo}}>
-      <div>
-        <Header />
-        {children}
-      </div>
+    <UserDetailsContext.Provider value={{ userDetails, setUserDetails }}>
+      <TripDetailContext.Provider value={{ tripDetailInfo, setTripDetailInfo }}>
+        {/* <div> */}
+        <div className="relative min-h-screen">
+          
+          <Header />
+          {children}
+        </div>
+        {/* </div> */}
       </TripDetailContext.Provider>
     </UserDetailsContext.Provider>
   )
@@ -54,4 +57,4 @@ export default Provider
 
 export const useUserDetails = () => React.useContext(UserDetailsContext);
 
-export const useTripDetails = ():TripContextType | undefined => React.useContext(TripDetailContext);
+export const useTripDetails = (): TripContextType | undefined => React.useContext(TripDetailContext);
