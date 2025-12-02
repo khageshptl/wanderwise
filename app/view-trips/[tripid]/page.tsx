@@ -34,9 +34,9 @@ function ViewTrip() {
             <div className='col-span-3'>
                 <Itinerary />
             </div>
-            <div className='col-span-2'>
+            {/* <div className='col-span-2'>
                 <GlobalMap />
-            </div>
+            </div> */}
         </div>
     )
 }

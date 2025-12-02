@@ -2,6 +2,8 @@
 import { TripInfo } from "@/app/create-new-trip/_components/ChatBox";
 import { UserAvatar } from "@clerk/nextjs";
 import { Calendar, Users, Wallet, Wallet2 } from "lucide-react";
+import { Button } from "./button";
+import DownloadTripPDFButton from "../DownloadTripPDFButton";
 import {
   useMotionValueEvent,
   useScroll,
@@ -57,6 +59,7 @@ export const Timeline = ({ data, tripData }: { data: TimelineEntry[], tripData: 
             <Users />
             <h2>{tripData?.group_size}</h2>
           </div>
+          <DownloadTripPDFButton tripData={tripData} />
         </div>
       </div>
 
