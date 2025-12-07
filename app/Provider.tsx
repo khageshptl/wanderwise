@@ -7,6 +7,8 @@ import { useUser } from '@clerk/nextjs';
 import { UserDetailsContext } from '@/context/UserDetailsContext';
 import { TripContextType, TripDetailContext } from '@/context/TripDetailContex';
 import { TripInfo } from './create-new-trip/_components/ChatBox';
+import { usePathname } from 'next/navigation';
+import { Toaster, toast } from 'react-hot-toast';
 
 function Provider({
   children,
@@ -22,6 +24,7 @@ function Provider({
   const [tripDetailInfo, setTripDetailInfo] = useState<TripInfo | null>(null);
 
   const { user } = useUser();
+  const path = usePathname();
 
   useEffect(() => {
     user && CreateNewUser();
@@ -36,16 +39,19 @@ function Provider({
         imageUrl: user?.imageUrl,
       });
       setUserDetails(result);
+      toast.success('Logged in successfully!');
     }
   }
   return (
     <UserDetailsContext.Provider value={{ userDetails, setUserDetails }}>
       <TripDetailContext.Provider value={{ tripDetailInfo, setTripDetailInfo }}>
         {/* <div> */}
-        <div className="relative min-h-screen">
-          
+        <div className="relative">
           <Header />
-          {children}
+          <div className={path == '/' ? '' : 'mt-20 md:mt-24'}>
+            {children}
+          </div>
+          <Toaster />
         </div>
         {/* </div> */}
       </TripDetailContext.Provider>

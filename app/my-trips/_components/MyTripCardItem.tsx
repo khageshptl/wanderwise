@@ -24,8 +24,15 @@ function MyTripCardItem({ trip }: props) {
         setPhotoUrl(result.data);
     }
     return (
-        <Link href={'/view-trips/' + trip?.tripId} className='p-5 rounded-2xl glass-card'>
-            <Image src={photoUrl ? photoUrl : '/scene.jpg'} className='object-cover rounded-xl w-full h-[270px]' alt={trip?.tripDetail?.destination} width={400} height={400} />
+        <Link href={'/view-trips/' + trip?.tripId} className='p-5 rounded-2xl glass-card hover:scale-105 transition-all duration-300'>
+            <div className='relative w-full aspect-[4/3]'>
+                <Image
+                    src={photoUrl ? photoUrl : '/scene.jpg'}
+                    className='object-cover rounded-xl'
+                    alt={trip?.tripDetail?.destination}
+                    fill
+                />
+            </div>
             <h2 className='flex gap-2 font-semibold text-xl mt-2'><span className='text-wrap'>{trip?.tripDetail?.origin}</span><ArrowBigRight className='mt-1' />{trip?.tripDetail?.destination} </h2>
             <h2 className='mt-2 text-muted-foreground'>{trip?.tripDetail?.duration} Trip with {trip?.tripDetail?.budget} budget</h2>
         </Link>

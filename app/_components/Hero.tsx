@@ -47,19 +47,19 @@ function Hero() {
     const videoSrc = mounted && theme === 'dark' ? '/HeroDark3.mp4' : '/HeroLight.mp4';
     const blurEffect = mounted && theme === 'dark' ? '' : 'blur-xs';
     return (
-        <div className='pt-24 w-full flex justify-center pb-49 relative overflow-hidden target'>
+        <div className='h-screen w-full flex justify-center relative overflow-hidden target snap-start pt-40 md:pt-24 pb-10 md:pb-49'>
             <video
                 autoPlay
                 loop
                 muted
                 playsInline
-                className= {`absolute inset-0 w-full h-full object-cover z-0 pointer-events-none ${blurEffect}`}
+                className={`absolute inset-0 w-full h-full object-cover z-0 pointer-events-none ${blurEffect}`}
                 key={videoSrc}
             >
                 <source src={videoSrc} type="video/mp4" />
             </video>
-            <div className='max-w-3xl w-full text-center space-y-6 relative'>
-                <h1 className='text-l md:text-4xl font-bold'>
+            <div className='max-w-3xl w-full text-center space-y-6 relative px-4'>
+                <h1 className='text-3xl md:text-4xl font-bold'>
                     Hey, i'm your personal <span className='gradient-text'>Trip Planner</span>
                 </h1>
                 <p className='text-foreground/80'>

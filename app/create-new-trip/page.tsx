@@ -26,7 +26,7 @@ function CreateNewTrip() {
     // }, [])
 
     return (
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-3 p-7'>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-3 p-5'>
             <div>
                 <ChatBox />
             </div>
@@ -34,7 +34,7 @@ function CreateNewTrip() {
                 {activeIndex == 0 ? <Itinerary /> : <GlobalMap />}
 
                 <Tooltip>
-                    <TooltipTrigger className='absolute bottom-10 left-[50%] hover:shadow-2xl hover:scale-105 transition-transform transform-ease-in-out glass-button text-primary-foreground
+                    <TooltipTrigger className='absolute bottom-10 left-1/2 -translate-x-1/2 hover:shadow-2xl hover:scale-105 transition-transform transform-ease-in-out glass-button text-primary-foreground
                     glass-button-globe '>
                         <Button size={'lg'} onClick={() => setActiveIndex(activeIndex == 0 ? 1 : 0)}>
                             {activeIndex == 0 ? <Plane /> : <Globe2 />}

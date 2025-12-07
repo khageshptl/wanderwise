@@ -79,6 +79,15 @@ function ChatBox() {
     const [tripDetail, setTripDetail] = useState<TripInfo>();
     const saveTripDetail = useMutation(api.tripDetail.CreateTripDetail);
     const { userDetails, setUserDetails } = useUserDetails();
+    const messagesEndRef = React.useRef<HTMLDivElement>(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages, loading]);
 
     //@ts-ignore
     const { tripDetailInfo, setTripDetailInfo } = useTripDetails();
@@ -166,22 +175,22 @@ function ChatBox() {
     }, [isFinal])
 
     return (
-        <div className='h-[82.5vh] flex flex-col bg-muted/50 dark:bg-muted/20 rounded-2xl p-3'>
+        <div className='h-[80vh] md:h-[81.5vh] flex flex-col bg-muted/50 dark:bg-muted/20 rounded-2xl p-3'>
             {/* Display messages */}
             {messages.length === 0 &&
                 <EmptyBoxState onSelectOption={(v: string) => { setUserInput(v); onSend() }} />
             }
-            <section className='flex-1 overflow-y-auto p-4'>
+            <section className='flex-1 overflow-y-auto p-2 md:p-4 scrollbar-hide'>
                 {messages.map((msg: Message, index) => (
                     msg.role === 'user' ?
                         <div className='flex justify-end mt-2' key={index}>
-                            <div className='max-w-lg bg-primary text-primary-foreground px-4 py-2 rounded-3xl'>
+                            <div className='max-w-[85%] md:max-w-lg bg-primary text-primary-foreground px-4 py-2 rounded-3xl text-sm md:text-base'>
                                 {msg.content}
                             </div>
                         </div>
                         :
                         <div className='flex justify-start mt-2' key={index}>
-                            <div className='max-w-lg bg-muted dark:bg-muted/50 text-foreground px-4 py-2 rounded-3xl'>
+                            <div className='max-w-[95%] md:max-w-lg bg-muted dark:bg-muted/50 text-foreground px-4 py-2 rounded-3xl text-sm md:text-base'>
                                 {/* {msg.content} */}
                                 {typeof msg.content === "object" ? (
                                     <pre className="whitespace-pre-wrap text-sm">
@@ -199,16 +208,23 @@ function ChatBox() {
                         <Loader className='animate-spin' />
                     </div>
                 </div>}
+                <div ref={messagesEndRef} />
             </section>
             {/* User Input */}
-            <section>
-                <div className='border rounded-2xl p-4 shadow-xl relative'>
+            <section className='mt-2'>
+                <div className='border rounded-2xl p-2 md:p-4 shadow-xl relative bg-background/50 backdrop-blur-sm'>
                     <Textarea placeholder='Start Planning Your Trip From Here...'
-                        className='w-full h-28 bg-transparent border-none focus-visible:ring-0 shadow-none resize-none'
+                        className='w-full h-20 md:h-28 bg-transparent border-none focus-visible:ring-0 shadow-none resize-none pr-12'
                         onChange={(event) => setUserInput(event.target.value ?? '')}
                         value={userInput}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                                e.preventDefault();
+                                onSend();
+                            }
+                        }}
                     />
-                    <Button size={'icon'} className='absolute bottom-6 right-6 bg-neutral-900 text-white dark:bg-neutral-100 dark:text-black hover:bg-neutral-800 dark:hover:bg-neutral-200 glass-button text-primary-foreground' onClick={() => onSend()}>
+                    <Button size={'icon'} className='absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-neutral-900 text-white dark:bg-neutral-100 dark:text-black hover:bg-neutral-800 dark:hover:bg-neutral-200 glass-button text-primary-foreground' onClick={() => onSend()}>
                         <Send className='h-3 w-3' />
                     </Button>
                 </div>

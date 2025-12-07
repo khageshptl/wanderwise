@@ -393,12 +393,12 @@ function Itinerary() {
         }))
     ] : [];
     return (
-        <div className="relative w-full h-[82.5vh] overflow-auto">
+        <div className="relative w-full h-[81.5vh] overflow-auto">
             {/* @ts-ignore */}
-            {tripsData ? <Timeline data={data} tripData={tripsData} /> 
-            : 
+            {tripsData ? <Timeline data={data} tripData={tripsData} />
+                :
                 <div className='relative w-full h-full overflow-hidden'>
-                <Image src={'/travel.jpg'} alt='Travel' height={800} width={800} className='w-full h-full object-cover rounded-2xl'/>
+                    <Image src={'/travel.jpg'} alt='Travel' height={800} width={800} className='w-full h-full object-cover rounded-2xl' />
 
                     {/* <img
                         src='/back.gif'
@@ -406,9 +406,9 @@ function Itinerary() {
                         width={800} height={800} className='w-full h-full object-cover rounded-3xl'
                     /> */}
 
-                {/* <h2 className='flex gap-2 text-3xl text-white items-center absolute bottom-10 left-10'> <ArrowLeft/> Getting to know you to build perfect Trip here...</h2> */}
+                    {/* <h2 className='flex gap-2 text-3xl text-white items-center absolute bottom-10 left-10'> <ArrowLeft/> Getting to know you to build perfect Trip here...</h2> */}
 
-            </div>
+                </div>
             }
         </div>
     );

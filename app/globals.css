@@ -119,12 +119,12 @@
 
   body {
     @apply bg-background text-foreground;
-    padding-top: 80px;
   }
 }
 
-.target{
+.target {
   background: rgba(0, 255, 255, 0) !important;
+  padding-top: 174px !important;
 }
 
 /* ============================================
@@ -136,7 +136,7 @@
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  /* border: 1px solid rgba(255, 255, 255, 0.3); */
   box-shadow:
     0 8px 32px 0 rgba(31, 38, 135, 0.15),
     0 0 0 1px rgba(255, 255, 255, 0.5) inset,
@@ -146,7 +146,7 @@
 
 .dark .liquid-glass-nav {
   background: rgba(15, 15, 25, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* border: 1px solid rgba(255, 255, 255, 0.1); */
   box-shadow:
     0 8px 32px 0 rgba(0, 0, 0, 0.4),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset,
@@ -174,7 +174,7 @@
   background: rgba(255, 255, 255, 0.2) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  /* border: 1px solid rgba(255, 255, 255, 0.3) !important; */
   box-shadow:
     0 4px 16px 0 rgba(31, 38, 135, 0.1),
     0 0 0 1px rgba(255, 255, 255, 0.4) inset !important;
@@ -184,10 +184,10 @@
 
 .dark .glass-button {
   background: rgba(255, 255, 255, 0.1) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  /* border: 1px solid rgba(255, 255, 255, 0.2) !important; */
   box-shadow:
     0 4px 16px 0 rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.2) inset !important;
+    0 0 0 1px rgba(255, 255, 255, 0.2) !important;
   color: rgb(215, 215, 215);
 }
 
@@ -196,7 +196,7 @@
   transform: translateY(-2px);
   box-shadow:
     0 8px 24px 0 rgba(31, 38, 135, 0.15),
-    0 0 0 1px rgba(255, 255, 255, 0.5) inset !important;
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset !important;
 }
 
 .glass-button-globe {
@@ -210,12 +210,23 @@
     0 0 0 1px rgba(255, 255, 255, 0.3) inset !important;
 }
 
+/* Hamburger Dropdown menu */
+
+.ham-dropdown {
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+}
+
+.dark .ham-dropdown {
+  background: rgba(0, 0, 0, 0.89) !important;
+}
+
 /* Glass Card - Primary */
 .glass-card {
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  /* border: 1px solid rgba(255, 255, 255, 0.3); */
   box-shadow:
     0 8px 32px 0 rgba(31, 38, 135, 0.1),
     0 0 0 1px rgba(255, 255, 255, 0.4) inset;
@@ -224,7 +235,7 @@
 
 .dark .glass-card {
   background: rgba(20, 20, 30, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* border: 1px solid rgba(255, 255, 255, 0.1); */
   box-shadow:
     0 8px 32px 0 rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
@@ -250,7 +261,7 @@
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(12px) saturate(150%);
   -webkit-backdrop-filter: blur(12px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  /* border: 1px solid rgba(255, 255, 255, 0.25); */
   box-shadow:
     0 4px 24px 0 rgba(31, 38, 135, 0.08),
     0 0 0 1px rgba(255, 255, 255, 0.3) inset;
@@ -258,7 +269,7 @@
 
 .dark .glass-container {
   background: rgba(15, 15, 25, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* border: 1px solid rgba(255, 255, 255, 0.08); */
   box-shadow:
     0 4px 24px 0 rgba(0, 0, 0, 0.25),
     0 0 0 1px rgba(255, 255, 255, 0.08) inset;
@@ -269,7 +280,7 @@
   background: rgba(255, 255, 255, 0.4) !important;
   backdrop-filter: blur(8px) !important;
   -webkit-backdrop-filter: blur(8px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  /* border: 1px solid rgba(255, 255, 255, 0.3) !important; */
   box-shadow:
     0 2px 8px 0 rgba(31, 38, 135, 0.05),
     0 0 0 1px rgba(255, 255, 255, 0.3) inset !important;
@@ -278,7 +289,7 @@
 
 .dark .glass-input {
   background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  /* border: 1px solid rgba(255, 255, 255, 0.15) !important; */
   box-shadow:
     0 2px 8px 0 rgba(0, 0, 0, 0.2),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset !important;

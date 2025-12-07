@@ -29,8 +29,15 @@ function HotelCardItem({ hotel }: Props) {
     }
 
     return (
-        <div className='flex flex-col gap-1 m-2 p-2 rounded-xl glass-card cursor-pointer'>
-            <Image src={photoUrl ? photoUrl : '/scene.jpg'} alt='place-image' width={400} height={200} className='rounded-xl shadow object-cover mb-2 ' />
+        <div className='flex flex-col gap-1 m-2 p-2 rounded-xl glass-card cursor-pointer hover:scale-105 transition-all duration-300'>
+            <div className='relative w-full aspect-video mb-2'>
+                <Image
+                    src={photoUrl ? photoUrl : '/scene.jpg'}
+                    alt='place-image'
+                    fill
+                    className='rounded-xl shadow object-cover'
+                />
+            </div>
             <h2 className='font-semibold text-lg'>{hotel?.hotel_name}</h2>
             <h2 className='text-muted-foreground'>{hotel?.hotel_address}</h2>
             <div className='flex justify-between items-center'>

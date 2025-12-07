@@ -30,11 +30,11 @@ function ViewTrip() {
     }, [convex, params?.tripid, setTripDetailInfo, userDetails?._id]);
 
     return (
-        <div className='grid grid-cols-5'>
-            <div className='col-span-3'>
+        <div className='grid grid-cols-1 md:grid-cols-5 gap-5'>
+            <div className='col-span-1 md:col-span-3 mt-5'>
                 <Itinerary />
             </div>
-            {/* <div className='col-span-2'>
+            {/* <div className='col-span-1 md:col-span-2'>
                 <GlobalMap />
             </div> */}
         </div>

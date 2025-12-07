@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { Download, Loader2 } from 'lucide-react';
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 interface DownloadTripPDFButtonProps {
     tripData: any;
@@ -14,10 +15,18 @@ const DownloadTripPDFButton: React.FC<DownloadTripPDFButtonProps> = ({ tripData 
 
     const handleDownload = async () => {
         setLoading(true);
+        const downloadPromise = axios.post('/api/generate-trip-pdf', tripData, {
+            responseType: 'blob', // Important for handling binary data
+        });
+
+        toast.promise(downloadPromise, {
+            loading: 'Generating PDF...',
+            success: 'PDF Downloaded Successfully!',
+            error: 'Failed to download PDF.',
+        });
+
         try {
-            const response = await axios.post('/api/generate-trip-pdf', tripData, {
-                responseType: 'blob', // Important for handling binary data
-            });
+            const response = await downloadPromise;
 
             // Create a blob from the response data
             const blob = new Blob([response.data], { type: 'application/pdf' });
@@ -35,7 +44,6 @@ const DownloadTripPDFButton: React.FC<DownloadTripPDFButtonProps> = ({ tripData 
             window.URL.revokeObjectURL(url);
         } catch (error) {
             console.error('Error downloading PDF:', error);
-            alert('Failed to download PDF. Please try again.');
         } finally {
             setLoading(false);
         }
