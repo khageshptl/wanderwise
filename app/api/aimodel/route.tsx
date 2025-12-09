@@ -266,7 +266,6 @@ Hotel address, Price(should be in INR), hotel image url, geo coordinates, rating
 }
 `;
 
-
 export async function POST(req: NextRequest) {
 
   const { messages, isFinal } = await req.json();
@@ -302,11 +301,10 @@ export async function POST(req: NextRequest) {
       })),
     ];
 
-    // 🔥 Wrapped ONLY this call with retry handler
     const response = await retryGeminiRequest(() =>
       ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        // model: "gemini-2.0-flash-lite",
+        // model: "gemini-2.5-flash",
+        model: "gemini-2.5-flash-lite",
         contents: formattedMessages,
       })
     );

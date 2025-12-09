@@ -13,6 +13,7 @@ function GlobalMap() {
     const { tripDetailInfo, setTripDetailInfo } = useTripDetails();
 
     useEffect(() => {
+        if (!mapContainerRef.current) return;
         mapboxgl.accessToken = process?.env?.NEXT_PUBLIC_MAP_BOX_API_KEY;
         const map = new mapboxgl.Map({
             container: mapContainerRef?.current ?? '', // container ID
@@ -21,6 +22,7 @@ function GlobalMap() {
             zoom: 1.7, // starting zoom
             projection: 'globe'
         });
+        mapRef.current = map;
         const markers: mapboxgl.Marker[] = [];
 
         if (tripDetailInfo?.itinerary) {
@@ -32,13 +34,13 @@ function GlobalMap() {
                             .setPopup(
                                 new mapboxgl.Popup({ offset: 25 }).setText(activity.place_name)
                             )
-                            .addTo(mapRef.current!);
-                            markers.push(marker);
-                            mapRef.current!.flyTo({
-                                center: [activity?.geo_coordinates?.longitude, activity?.geo_coordinates?.latitude],
-                                zoom: 10,
-                                essential:true
-                            })
+                            .addTo(map);
+                        markers.push(marker);
+                        map.flyTo({
+                            center: [activity?.geo_coordinates?.longitude, activity?.geo_coordinates?.latitude],
+                            zoom: 10,
+                            essential: true
+                        })
                     }
                 })
 
