@@ -38,6 +38,7 @@ export type TripInfo = {
     duration: string,
     group_size: string,
     origin: string,
+    total_estimated_budget: string,
     hotels: Hotel[],
     itinerary: Itinerary[]
 }

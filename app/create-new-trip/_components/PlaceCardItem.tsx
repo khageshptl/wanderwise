@@ -39,9 +39,12 @@ function PlaceCardItem({ activity }: Props) {
                     className='rounded-xl shadow object-cover'
                 />
             </div>
-            <h2 className='font-semibold text-lg'>{activity.place_name}</h2>
+            <h2 className='font-semibold text-lg line-clamp-2'>{activity.place_name}</h2>
             <p className='text-muted-foreground line-clamp-2'>{activity?.place_details}</p>
-            <h2 className='flex gap-2 text-blue-500 dark:text-blue-400 line-clamp-1'><Ticket />{activity?.ticket_pricing}</h2>
+            <h2 className='flex items-start gap-2 text-blue-500 dark:text-blue-400'>
+                <Ticket className='w-5 h-5 mt-0.5 shrink-0' />
+                <span className='line-clamp-2'>{activity?.ticket_pricing}</span>
+            </h2>
             <p className='flex gap-2 text-green-700 dark:text-green-400'><Clock />{activity?.best_time_to_visit}</p>
             <Link href={'https://www.google.com/maps/search/?api=1&query=' + activity?.place_name} target='_blank' >
                 <div className='w-full mt-1'>

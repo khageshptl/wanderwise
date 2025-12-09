@@ -35,7 +35,6 @@ function Hero() {
     const { theme } = useTheme();
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
-    // console.log(user);
     const onSend = () => {
         if (!user) {
             router.push('/sign-in')

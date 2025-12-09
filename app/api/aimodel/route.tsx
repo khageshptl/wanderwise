@@ -216,6 +216,7 @@ So you MUST ALWAYS return valid JSON and follow exactly this format:
 const FINAL_PROMPT = `Generate Travel Plan with give details, give me Hotels options list with HotelName, 
 Hotel address, Price(should be in INR), hotel image url, geo coordinates, rating, descriptions and  suggest itinerary with placeName, Place Details, Place Image Url,
  Geo Coordinates,Place address, ticket Pricing, Time travel each of the location , with each day plan with best time to visit in JSON format.
+ Also provide a total estimated budget for the entire trip (excluding flights) in INR as a range (e.g. "INR 15000 - 20000").
  Output Schema:
  {
   "trip_plan": {
@@ -224,6 +225,7 @@ Hotel address, Price(should be in INR), hotel image url, geo coordinates, rating
     "origin": "string",
     "budget": "string",
     "group_size": "string",
+    "total_estimated_budget": "string",
     "hotels": [
       {
         "hotel_name": "string",

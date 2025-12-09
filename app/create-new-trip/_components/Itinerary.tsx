@@ -392,6 +392,24 @@ function Itinerary() {
             )
         }))
     ] : [];
+
+    if (tripsData?.total_estimated_budget) {
+        data.push({
+            title: "Estimated Budget",
+            content: (
+                <div className='flex items-center gap-4 p-4 bg-muted/50 rounded-xl border border-muted'>
+                    <div className='p-3 bg-primary/10 rounded-full'>
+                        <Wallet className='h-8 w-8 text-primary' />
+                    </div>
+                    <div>
+                        <h3 className='font-semibold text-lg'>Total Estimated Budget</h3>
+                        <p className='text-muted-foreground'>{tripsData.total_estimated_budget}</p>
+                        <p className='text-xs text-muted-foreground mt-1'>*Excluding flights</p>
+                    </div>
+                </div>
+            )
+        });
+    }
     return (
         <div className="relative w-full h-[81.5vh] overflow-auto">
             {/* @ts-ignore */}
