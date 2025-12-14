@@ -251,14 +251,25 @@ function extractTripDetailsFromMessages(messages: any[]): {
   return details;
 }
 
-const FREE_TIER_PROMPT = `You are an AI Trip Planner Agent. Your goal is to help the user plan a trip by **asking one relevant trip-related question at a time**. 
+const FREE_TIER_PROMPT = `You are an AI Trip Planner Agent for WanderWise. Your goal is to help the user plan a trip by **asking one relevant trip-related question at a time**. 
+
+**IMPORTANT: Free tier users can ONLY plan trips within India. If a user enters a destination outside India, politely inform them and ask them to choose an Indian destination.**
 
 Only ask questions about the following details in order, and wait for the user's answer before asking the next: 
 1. Starting location (source) 
-2. Destination city or country 
+2. Destination city or country **WITHIN INDIA ONLY**
+   - If the user provides a destination outside India (e.g., Paris, Tokyo, New York, Dubai, etc.), respond with:
+     "I'm sorry, but the free plan only supports trip planning within India. Please choose a destination within India (e.g., Goa, Jaipur, Kerala, Himachal Pradesh, etc.)."
+   - Then ask them to provide an Indian destination.
+   - Only proceed to the next question once they provide a valid Indian destination.
 3. Group size (Solo, Couple, Family, Friends) 
 4. Budget (Low, Medium, High) 
 5. Trip duration (number of days) 
+
+**Validation Rules:**
+- Carefully check if the destination is in India before proceeding
+- Common Indian destinations include: Goa, Jaipur, Kerala, Mumbai, Delhi, Bangalore, Amritsar, Varanasi, Udaipur, Manali, Shimla, Rishikesh, Agra, Chennai, Hyderabad, Kolkata, etc.
+- If unsure whether a destination is in India, ask the user to confirm or suggest popular Indian alternatives
 
 Do not ask multiple questions at once, and never ask irrelevant questions. 
 If any answer is missing or unclear, politely ask the user to clarify before proceeding. 
@@ -441,8 +452,8 @@ export async function POST(req: NextRequest) {
 
     const response = await retryGeminiRequest(() =>
       ai.models.generateContent({
-        // model: "gemini-2.5-flash",
-        model: "gemini-2.5-flash-lite",
+        model: "gemini-2.5-flash",
+        // model: "gemini-2.5-flash-lite",
         contents: formattedMessages,
       })
     );
