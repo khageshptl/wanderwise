@@ -21,11 +21,19 @@ function HotelCardItem({ hotel }: Props) {
     }, [hotel])
 
     const getGooglePlaceDetail = async () => {
-        const result = await axios.post('/api/google-place', {
-            placeName: hotel?.hotel_name
-        });
-        if (result?.data?.err) return;
-        setPhotoUrl(result.data);
+        try {
+            const result = await axios.post('/api/google-place', {
+                placeName: hotel?.hotel_name
+            });
+            if (result?.data?.err) {
+                console.warn('No photo found for hotel:', hotel?.hotel_name);
+                return;
+            }
+            setPhotoUrl(result.data);
+        } catch (error: any) {
+            console.error('Error fetching hotel photo:', error.message);
+            // Fallback to placeholder image
+        }
     }
 
     return (

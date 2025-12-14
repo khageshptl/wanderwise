@@ -54,7 +54,7 @@ function GlobalMap() {
         <div>
             <div ref={mapContainerRef} style={{
                 width: '95%',
-                height: '85vh',
+                height: '81.5vh',
                 borderRadius: '20px'
             }}>
 

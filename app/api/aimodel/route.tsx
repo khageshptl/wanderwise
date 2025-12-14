@@ -161,23 +161,23 @@ import { aj } from "../arcjet/route";
 import { auth, currentUser } from "@clerk/nextjs/server";
 
 const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY!,
+    apiKey: process.env.GEMINI_API_KEY!,
 });
 
 // Added minimal retry handler (nothing else modified)
 async function retryGeminiRequest(requestFn: any, retries = 4, delay = 600) {
-  try {
-    return await requestFn();
-  } catch (err: any) {
-    const status = err?.response?.status || err?.status;
+    try {
+        return await requestFn();
+    } catch (err: any) {
+        const status = err?.response?.status || err?.status;
 
-    if (status === 503 && retries > 0) {
-      console.log(`Gemini overloaded — retrying... (${retries} retries left)`);
-      await new Promise(res => setTimeout(res, delay));
-      return retryGeminiRequest(requestFn, retries - 1, delay * 1.6);
+        if (status === 503 && retries > 0) {
+            console.log(`Gemini overloaded — retrying... (${retries} retries left)`);
+            await new Promise(res => setTimeout(res, delay));
+            return retryGeminiRequest(requestFn, retries - 1, delay * 1.6);
+        }
+        throw err;
     }
-    throw err;
-  }
 }
 
 const PROMPT = `You are an AI Trip Planner Agent. Your goal is to help the user plan a trip by **asking one relevant trip-related question at a time**.
@@ -268,71 +268,71 @@ Hotel address, Price(should be in INR), hotel image url, geo coordinates, rating
 
 export async function POST(req: NextRequest) {
 
-  const { messages, isFinal } = await req.json();
+    const { messages, isFinal } = await req.json();
 
-  const user = await currentUser();
+    const user = await currentUser();
 
-  const { has } = await auth();
+    const { has } = await auth();
 
-  const hasPremiumAccess = has({ plan: 'monthly' });
+    const hasPremiumAccess = has({ plan: 'monthly' });
 
-  console.log('hasPremiumAccess', hasPremiumAccess);
+    console.log('hasPremiumAccess', hasPremiumAccess);
 
-  // const decision = await aj.protect(req, { userId: user?.primaryEmailAddress?.emailAddress ?? '', requested: isFinal ? 5 : 0 });
+    // const decision = await aj.protect(req, { userId: user?.primaryEmailAddress?.emailAddress ?? '', requested: isFinal ? 5 : 0 });
 
-  // // @ts-ignore
-  // if (decision?.reason?.remaining == 0 && !hasPremiumAccess) {
-  //   return NextResponse.json({
-  //     resp: 'No Free Credits Remaining',
-  //     ui: 'limit'
-  //   })
-  // }
+    // // @ts-ignore
+    // if (decision?.reason?.remaining == 0 && !hasPremiumAccess) {
+    //   return NextResponse.json({
+    //     resp: 'No Free Credits Remaining',
+    //     ui: 'limit'
+    //   })
+    // }
 
-  try {
+    try {
 
-    const formattedMessages = [
-      {
-        role: "user",
-        parts: [{ text: isFinal ? FINAL_PROMPT : PROMPT }],
-      },
-      ...(messages || []).map((msg: any) => ({
-        role: msg.role === "assistant" ? "model" : "user",
-        parts: [{ text: msg.content }],
-      })),
-    ];
+        const formattedMessages = [
+            {
+                role: "user",
+                parts: [{ text: isFinal ? FINAL_PROMPT : PROMPT }],
+            },
+            ...(messages || []).map((msg: any) => ({
+                role: msg.role === "assistant" ? "model" : "user",
+                parts: [{ text: msg.content }],
+            })),
+        ];
 
-    const response = await retryGeminiRequest(() =>
-      ai.models.generateContent({
-        // model: "gemini-2.5-flash",
-        model: "gemini-2.5-flash-lite",
-        contents: formattedMessages,
-      })
-    );
+        const response = await retryGeminiRequest(() =>
+            ai.models.generateContent({
+                // model: "gemini-2.5-flash",
+                model: "gemini-2.5-flash-lite",
+                contents: formattedMessages,
+            })
+        );
 
-    let text =
-      (response as any).text ??
-      response.candidates?.[0]?.content?.parts?.[0]?.text ??
-      "No text returned";
+        let text =
+            (response as any).text ??
+            response.candidates?.[0]?.content?.parts?.[0]?.text ??
+            "No text returned";
 
-    console.log("AI raw output", text);
+        // console.log("AI raw output", text);
 
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    let parsed;
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        let parsed;
 
-    if (jsonMatch) {
-      try {
-        parsed = JSON.parse(jsonMatch[0]);
-      } catch {
-        parsed = { resp: text.trim() || "Sorry, please clarify.", ui: "Final" };
-      }
-    } else {
-      parsed = { resp: text.trim() || "Sorry, please clarify.", ui: "Final" };
+        if (jsonMatch) {
+            try {
+                parsed = JSON.parse(jsonMatch[0]);
+            } catch {
+                parsed = { resp: text.trim() || "Sorry, please clarify.", ui: "Final" };
+            }
+        } else {
+            parsed = { resp: text.trim() || "Sorry, please clarify.", ui: "Final" };
+        }
+
+        return NextResponse.json(parsed);
+
+    } catch (err: any) {
+        console.error("Gemini error:", err?.response?.data || err?.message || err);
+        return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
     }
-
-    return NextResponse.json(parsed);
-
-  } catch (err: any) {
-    console.error("Gemini error:", err?.response?.data || err?.message || err);
-    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
-  }
 }

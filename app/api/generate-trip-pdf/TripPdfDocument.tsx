@@ -160,8 +160,9 @@ const TripPdfDocument: React.FC<TripPdfDocumentProps> = ({ tripData }) => {
                     <Text style={styles.sectionTitle}>Hotels</Text>
                     {trip_plan?.hotels?.map((hotel: any, index: number) => (
                         <View key={index} style={styles.hotelCard}>
-                            {hotel.hotel_image_url && (
-                                <Image src={hotel.hotel_image_url} style={styles.hotelImage} />
+                            {/* Render base64 image if available */}
+                            {hotel.hotel_image_base64 && (
+                                <Image src={hotel.hotel_image_base64} style={styles.hotelImage} />
                             )}
                             <Text style={styles.hotelName}>{hotel.hotel_name}</Text>
                             <Text style={styles.hotelAddress}>{hotel.hotel_address}</Text>
@@ -182,6 +183,10 @@ const TripPdfDocument: React.FC<TripPdfDocumentProps> = ({ tripData }) => {
 
                             {day.activities?.map((activity: any, actIndex: number) => (
                                 <View key={actIndex} style={styles.activityCard}>
+                                    {/* Render place image if available */}
+                                    {activity.place_image_base64 && (
+                                        <Image src={activity.place_image_base64} style={{ width: '100%', height: 120, objectFit: 'cover', borderRadius: 5, marginBottom: 5 }} />
+                                    )}
                                     <Text style={styles.activityName}>{activity.place_name}</Text>
                                     <Text style={styles.activityDetails}>{activity.place_details}</Text>
                                     <Text style={styles.textSmall}>Time: {activity.time_travel_each_location}</Text>
@@ -191,9 +196,34 @@ const TripPdfDocument: React.FC<TripPdfDocumentProps> = ({ tripData }) => {
                         </View>
                     ))}
                 </View>
+
+                {/* Total Estimated Budget */}
+                {trip_plan?.total_estimated_budget && (
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Estimated Budget</Text>
+                        <View style={{
+                            backgroundColor: '#f0fdf4',
+                            padding: 15,
+                            borderRadius: 5,
+                            borderLeftWidth: 4,
+                            borderLeftColor: '#22c55e'
+                        }}>
+                            <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#166534', marginBottom: 5 }}>
+                                Total Estimated Budget
+                            </Text>
+                            <Text style={{ fontSize: 14, color: '#15803d' }}>
+                                {trip_plan.total_estimated_budget}
+                            </Text>
+                            <Text style={{ fontSize: 9, color: '#6b7280', marginTop: 5 }}>
+                                *Excluding flights
+                            </Text>
+                        </View>
+                    </View>
+                )}
             </Page>
         </Document>
     );
 };
 
 export default TripPdfDocument;
+

@@ -93,7 +93,7 @@ function ChatBox() {
     //@ts-ignore
     const { tripDetailInfo, setTripDetailInfo } = useTripDetails();
 
-    console.log(userDetails?._id);
+    // console.log(userDetails?._id);
     const onSend = async () => {
         if (typeof userInput !== 'string' || !userInput.trim()) return;
 
@@ -111,7 +111,7 @@ function ChatBox() {
             isFinal: isFinal
         });
 
-        console.log("TRIP", result.data);
+        // console.log("TRIP", result.data);
 
 
         !isFinal && setMessages((prev: Message[]) => [...prev, {
@@ -140,7 +140,7 @@ function ChatBox() {
             });
         }
 
-        console.log(result?.data);
+        // console.log(result?.data);
         setLoading(false);
     }
 

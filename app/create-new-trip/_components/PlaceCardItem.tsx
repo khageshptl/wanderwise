@@ -22,11 +22,19 @@ function PlaceCardItem({ activity }: Props) {
     }, [activity])
 
     const getGooglePlaceDetail = async () => {
-        const result = await axios.post('/api/google-place', {
-            placeName: activity?.place_name + ":" + activity?.place_address
-        });
-        if (result?.data?.err) return;
-        setPhotoUrl(result.data);
+        try {
+            const result = await axios.post('/api/google-place', {
+                placeName: activity?.place_name + ":" + activity?.place_address
+            });
+            if (result?.data?.err) {
+                console.warn('No photo found for place:', activity?.place_name);
+                return;
+            }
+            setPhotoUrl(result.data);
+        } catch (error: any) {
+            // console.error('Error fetching place photo:', error.message);
+            // Fallback to placeholder image
+        }
     }
 
     return (
