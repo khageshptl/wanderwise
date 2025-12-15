@@ -159,8 +159,6 @@ import { GoogleGenAI } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
 import { aj } from "../arcjet/route";
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { generateTripPlanFromKB } from "@/lib/kbGenerator";
-import { generateTripPlanWithRAG } from "@/lib/planner";
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY!,
@@ -181,100 +179,6 @@ async function retryGeminiRequest(requestFn: any, retries = 4, delay = 600) {
     throw err;
   }
 }
-
-/**
- * Extracts trip details from conversation history
- */
-function extractTripDetailsFromMessages(messages: any[]): {
-  destination: string;
-  origin: string;
-  groupSize: string;
-  budget: string;
-  duration: string;
-} {
-  const details = {
-    destination: '',
-    origin: '',
-    groupSize: '',
-    budget: '',
-    duration: '',
-  };
-
-  // Parse messages to extract trip details
-  messages.forEach((msg) => {
-    if (msg.role === 'user') {
-      const content = msg.content.toLowerCase();
-
-      // Extract destination (look for city/country names)
-      if (content.includes('destination') || content.includes('going to') || content.includes('visit')) {
-        const match = msg.content.match(/(?:destination|going to|visit)\s*:?\s*([a-zA-Z\s]+)/i);
-        if (match) details.destination = match[1].trim();
-      } else if (!details.destination && msg.content.length < 50 && /^[a-zA-Z\s]+$/.test(msg.content)) {
-        // Likely a destination name
-        details.destination = msg.content.trim();
-      }
-
-      // Extract origin
-      if (content.includes('from') || content.includes('origin') || content.includes('starting')) {
-        const match = msg.content.match(/(?:from|origin|starting)\s*:?\s*([a-zA-Z\s]+)/i);
-        if (match) details.origin = match[1].trim();
-      }
-
-      // Extract group size
-      if (content.includes('solo') || content.includes('alone')) {
-        details.groupSize = 'Solo';
-      } else if (content.includes('couple') || content.includes('two')) {
-        details.groupSize = 'Couple';
-      } else if (content.includes('family')) {
-        details.groupSize = 'Family';
-      } else if (content.includes('friends') || content.includes('group')) {
-        details.groupSize = 'Friends';
-      }
-
-      // Extract budget
-      if (content.includes('low budget') || content.includes('cheap') || content.includes('budget')) {
-        details.budget = 'Low';
-      } else if (content.includes('medium') || content.includes('moderate')) {
-        details.budget = 'Medium';
-      } else if (content.includes('high') || content.includes('luxury') || content.includes('premium')) {
-        details.budget = 'High';
-      }
-
-      // Extract duration
-      const durationMatch = msg.content.match(/(\d+)\s*(?:day|days)/i);
-      if (durationMatch) {
-        details.duration = durationMatch[1];
-      }
-    }
-  });
-
-  return details;
-}
-
-const FREE_TIER_PROMPT = `You are an AI Trip Planner Agent for WanderWise. Your goal is to help the user plan a trip by **asking one relevant trip-related question at a time**. 
-
-**IMPORTANT: Free tier users can ONLY plan trips within India. If a user enters a destination outside India, politely inform them and ask them to choose an Indian destination.**
-
-Only ask questions about the following details in order, and wait for the user's answer before asking the next: 
-1. Starting location (source) 
-2. Destination city or country **WITHIN INDIA ONLY**
-   - If the user provides a destination outside India (e.g., Paris, Tokyo, New York, Dubai, etc.), respond with:
-     "I'm sorry, but the free plan only supports trip planning within India. Please choose a destination within India (e.g., Goa, Jaipur, Kerala, Himachal Pradesh, etc.)."
-   - Then ask them to provide an Indian destination.
-   - Only proceed to the next question once they provide a valid Indian destination.
-3. Group size (Solo, Couple, Family, Friends) 
-4. Budget (Low, Medium, High) 
-5. Trip duration (number of days) 
-
-**Validation Rules:**
-- Carefully check if the destination is in India before proceeding
-- Common Indian destinations include: Goa, Jaipur, Kerala, Mumbai, Delhi, Bangalore, Amritsar, Varanasi, Udaipur, Manali, Shimla, Rishikesh, Agra, Chennai, Hyderabad, Kolkata, etc.
-- If unsure whether a destination is in India, ask the user to confirm or suggest popular Indian alternatives
-
-Do not ask multiple questions at once, and never ask irrelevant questions. 
-If any answer is missing or unclear, politely ask the user to clarify before proceeding. 
-Always maintain a conversational, interactive style while asking questions.`;
-
 
 const PROMPT = `You are an AI Trip Planner Agent. Your goal is to help the user plan a trip by **asking one relevant trip-related question at a time**.
 
@@ -385,64 +289,11 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // If this is the final trip generation
-    if (isFinal) {
-      console.log('🎯 Final trip generation');
-
-      // Extract trip details from conversation history
-      const tripDetails = extractTripDetailsFromMessages(messages);
-
-      if (!tripDetails.destination || !tripDetails.origin || !tripDetails.duration) {
-        return NextResponse.json({
-          resp: 'Missing required trip details. Please provide destination, origin, and duration.',
-          ui: 'error'
-        });
-      }
-
-      // Free users: Use KB-only generation (no AI, no storage)
-      if (!hasPremiumAccess) {
-        console.log('📚 Free user - using KB-only generation');
-        const result = generateTripPlanFromKB(tripDetails);
-
-        // Handle error responses (e.g., destination not in KB)
-        if (result.error) {
-          return NextResponse.json({
-            resp: result.message,
-            ui: 'error'
-          });
-        }
-
-        // Return the trip plan (not stored)
-        return NextResponse.json(result);
-      }
-
-      // Premium users: Use Gemini API with RAG
-      console.log('🤖 Premium user - using Gemini API with RAG');
-      const result = await generateTripPlanWithRAG({
-        isPremium: true,
-        tripDetails,
-      });
-
-      // Handle error responses
-      if (result.error) {
-        return NextResponse.json({
-          resp: result.message,
-          ui: 'error'
-        });
-      }
-
-      // Return the trip plan
-      return NextResponse.json(result);
-    }
-
-    // Otherwise, continue with conversational flow
-    // Use different prompts based on user tier
-    const promptToUse = hasPremiumAccess ? PROMPT : FREE_TIER_PROMPT;
 
     const formattedMessages = [
       {
         role: "user",
-        parts: [{ text: promptToUse }],
+        parts: [{ text: isFinal ? FINAL_PROMPT : PROMPT }],
       },
       ...(messages || []).map((msg: any) => ({
         role: msg.role === "assistant" ? "model" : "user",

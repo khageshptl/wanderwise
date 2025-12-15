@@ -18,8 +18,6 @@ import { api } from '@/convex/_generated/api';
 import { useTripDetails, useUserDetails } from '@/app/Provider';
 import { v4 as uuid } from 'uuid';
 import { useUser } from '@clerk/nextjs';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 
 type Message = {
     role: string,
@@ -194,34 +192,13 @@ function ChatBox() {
                         :
                         <div className='flex justify-start mt-2' key={index}>
                             <div className='max-w-[95%] md:max-w-lg bg-muted dark:bg-muted/50 text-foreground px-4 py-2 rounded-3xl text-sm md:text-base'>
+                                {/* {msg.content} */}
                                 {typeof msg.content === "object" ? (
                                     <pre className="whitespace-pre-wrap text-sm">
                                         {JSON.stringify(msg.content, null, 2)}
                                     </pre>
                                 ) : (
-                                    <div className="markdown-content">
-                                        <ReactMarkdown
-                                            remarkPlugins={[remarkGfm]}
-                                            components={{
-                                                // Customize markdown elements
-                                                p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
-                                                ul: ({ children }) => <ul className="list-disc list-inside mb-2 ml-2">{children}</ul>,
-                                                ol: ({ children }) => <ol className="list-decimal list-inside mb-2 ml-2">{children}</ol>,
-                                                li: ({ children }) => <li className="mb-1">{children}</li>,
-                                                strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
-                                                em: ({ children }) => <em className="italic">{children}</em>,
-                                                code: ({ children }) => <code className="bg-muted-foreground/10 px-1 py-0.5 rounded text-xs font-mono">{children}</code>,
-                                                pre: ({ children }) => <pre className="bg-muted-foreground/10 p-2 rounded overflow-x-auto text-xs mb-2">{children}</pre>,
-                                                h1: ({ children }) => <h1 className="text-lg font-bold mb-2 mt-2">{children}</h1>,
-                                                h2: ({ children }) => <h2 className="text-base font-semibold mb-2 mt-2">{children}</h2>,
-                                                h3: ({ children }) => <h3 className="text-sm font-semibold mb-1 mt-1">{children}</h3>,
-                                                blockquote: ({ children }) => <blockquote className="border-l-2 border-muted-foreground/30 pl-3 italic my-2">{children}</blockquote>,
-                                                a: ({ children, href }) => <a href={href} className="text-primary underline hover:text-primary/80" target="_blank" rel="noopener noreferrer">{children}</a>,
-                                            }}
-                                        >
-                                            {msg.content}
-                                        </ReactMarkdown>
-                                    </div>
+                                    msg.content
                                 )}
                                 {RenderGenerativeUi(msg.ui ?? '')}
                             </div>
