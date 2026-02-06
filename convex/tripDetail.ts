@@ -46,3 +46,18 @@ export const GetTripById = query({
         return result[0];
     }
 })
+
+export const DeleteTrip = mutation({
+    args: {
+        tripDocId: v.id('TripDetailTable'),
+        uid: v.id('UserTable')
+    },
+    handler: async (ctx, args) => {
+        // Verify the trip belongs to the user before deleting
+        const trip = await ctx.db.get(args.tripDocId);
+        if (!trip || trip.uid !== args.uid) {
+            throw new Error('Unauthorized: Trip not found or does not belong to user');
+        }
+        await ctx.db.delete(args.tripDocId);
+    }
+})

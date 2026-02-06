@@ -162,7 +162,10 @@ const TripPdfDocument: React.FC<TripPdfDocumentProps> = ({ tripData }) => {
                         <View key={index} style={styles.hotelCard}>
                             {/* Render base64 image if available */}
                             {hotel.hotel_image_base64 && (
-                                <Image src={hotel.hotel_image_base64} style={styles.hotelImage} />
+                                <Image src={hotel.hotel_image_base64}
+                                    //  style={styles.hotelImage}  
+                                    style={{ width: '50%', height: 120, objectFit: 'cover', borderRadius: 5, marginBottom: 5 }}
+                                />
                             )}
                             <Text style={styles.hotelName}>{hotel.hotel_name}</Text>
                             <Text style={styles.hotelAddress}>{hotel.hotel_address}</Text>
@@ -185,7 +188,7 @@ const TripPdfDocument: React.FC<TripPdfDocumentProps> = ({ tripData }) => {
                                 <View key={actIndex} style={styles.activityCard}>
                                     {/* Render place image if available */}
                                     {activity.place_image_base64 && (
-                                        <Image src={activity.place_image_base64} style={{ width: '100%', height: 120, objectFit: 'cover', borderRadius: 5, marginBottom: 5 }} />
+                                        <Image src={activity.place_image_base64} style={{ width: '50%', height: 120, objectFit: 'cover', borderRadius: 5, marginBottom: 5 }} />
                                     )}
                                     <Text style={styles.activityName}>{activity.place_name}</Text>
                                     <Text style={styles.activityDetails}>{activity.place_details}</Text>

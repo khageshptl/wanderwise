@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Trip } from '../page'
 import Image from 'next/image'
-import { ArrowBigRight } from 'lucide-react'
+import { ArrowBigRight, Trash2 } from 'lucide-react'
 import axios from 'axios'
 import Link from 'next/link'
 
 type props = {
-    trip: Trip
+    trip: Trip,
+    onDelete?: (tripId: string) => void
 }
 
-function MyTripCardItem({ trip }: props) {
+function MyTripCardItem({ trip, onDelete }: props) {
     const [photoUrl, setPhotoUrl] = useState<string>();
 
     useEffect(() => {
@@ -23,8 +24,26 @@ function MyTripCardItem({ trip }: props) {
         if (result?.data?.err) return;
         setPhotoUrl(result.data);
     }
+
+    const handleDelete = (e: React.MouseEvent) => {
+        e.preventDefault(); // Prevent navigation
+        e.stopPropagation();
+        if (onDelete) {
+            onDelete(trip._id);
+        }
+    }
+
     return (
-        <Link href={'/view-trips/' + trip?.tripId} className='p-5 rounded-2xl glass-card hover:scale-105 transition-all duration-300'>
+        <Link href={'/view-trips/' + trip?.tripId} className='relative p-5 rounded-2xl glass-card hover:scale-105 transition-all duration-300 group'>
+            {/* Delete Button */}
+            <button
+                onClick={handleDelete}
+                className='absolute top-3 right-3 z-10 p-2 rounded-lg glass-card bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 hover:border-red-500/50 transition-all duration-300 opacity-0 group-hover:opacity-100'
+                aria-label="Delete trip"
+            >
+                <Trash2 className='w-5 h-5 text-red-500' />
+            </button>
+
             <div className='relative w-full aspect-[4/3]'>
                 <Image
                     src={photoUrl ? photoUrl : '/scene.jpg'}
