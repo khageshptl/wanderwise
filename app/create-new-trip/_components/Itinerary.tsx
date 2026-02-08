@@ -368,16 +368,17 @@ function Itinerary() {
     }, [tripDetailInfo])
 
     const data = tripsData ? [
-        {
+        // Only show hotels if there are any (Pro plan feature)
+        ...(tripsData?.hotels && tripsData.hotels.length > 0 ? [{
             title: "Recommended Hotels",
             content: (
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
-                    {tripsData?.hotels.map((hotel) => (
+                    {tripsData.hotels.map((hotel) => (
                         <HotelCardItem hotel={hotel} key={hotel.hotel_name} />
                     ))}
                 </div>
             ),
-        },
+        }] : []),
         ...tripsData?.itinerary.map((dayData) => ({
             title: `Day ${dayData.day}`,
             content: (

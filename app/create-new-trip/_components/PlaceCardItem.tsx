@@ -49,11 +49,18 @@ function PlaceCardItem({ activity }: Props) {
             </div>
             <h2 className='font-semibold text-lg line-clamp-2'>{activity.place_name}</h2>
             <p className='text-muted-foreground line-clamp-2'>{activity?.place_details}</p>
-            <h2 className='flex items-start gap-2 text-blue-500 dark:text-blue-400'>
-                <Ticket className='w-5 h-5 mt-0.5 shrink-0' />
-                <span className='line-clamp-2'>{activity?.ticket_pricing}</span>
-            </h2>
-            <p className='flex gap-2 text-green-700 dark:text-green-400'><Clock />{activity?.best_time_to_visit}</p>
+            {/* Hide ticket pricing for Free plan (India RAG returns 'Varies') */}
+            {activity?.ticket_pricing && activity.ticket_pricing !== 'Varies' && (
+                <h2 className='flex items-start gap-2 text-blue-500 dark:text-blue-400'>
+                    <Ticket className='w-5 h-5 mt-0.5 shrink-0' />
+                    <span className='line-clamp-2'>{activity.ticket_pricing}</span>
+                </h2>
+            )}
+            {/* Hide timing for Free plan (India RAG returns 'Anytime' or generic values) */}
+            {activity?.best_time_to_visit &&
+                !['Anytime', '2-3 hours'].includes(activity.best_time_to_visit) && (
+                    <p className='flex gap-2 text-green-700 dark:text-green-400'><Clock />{activity.best_time_to_visit}</p>
+                )}
             <Link href={'https://www.google.com/maps/search/?api=1&query=' + activity?.place_name} target='_blank' >
                 <div className='w-full mt-1'>
                     <Button variant='outline' className='w-full hover:text-primary justify-center glass-chip'>

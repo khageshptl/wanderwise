@@ -59,7 +59,10 @@ export const Timeline = ({ data, tripData }: { data: TimelineEntry[], tripData: 
             <Users />
             <h2>{tripData?.group_size}</h2>
           </div>
-          <DownloadTripPDFButton tripData={tripData} />
+          {/* Only show download for Pro plan users (who have hotels) */}
+          {tripData?.hotels && tripData.hotels.length > 0 && (
+            <DownloadTripPDFButton tripData={tripData} />
+          )}
         </div>
       </div>
 
