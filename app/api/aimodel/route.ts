@@ -164,7 +164,6 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY!,
 });
 
-// Added minimal retry handler (nothing else modified)
 async function retryGeminiRequest(requestFn: any, retries = 4, delay = 600) {
   try {
     return await requestFn();
@@ -313,8 +312,6 @@ export async function POST(req: NextRequest) {
       (response as any).text ??
       response.candidates?.[0]?.content?.parts?.[0]?.text ??
       "No text returned";
-
-    // console.log("AI raw output", text);
 
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     let parsed;

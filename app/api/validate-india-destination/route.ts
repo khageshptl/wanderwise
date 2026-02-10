@@ -1,14 +1,10 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
 
-// Initialize Gemini AI
 const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY!,
 });
 
-/**
- * Validate if a destination is in India using Gemini Flash
- */
 export async function POST(req: NextRequest) {
     try {
         const { destination } = await req.json();
@@ -20,7 +16,6 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        // Use Gemini to determine if destination is in India
         const prompt = `Is "${destination}" located in India?
 
 You must answer with EXACTLY one word: either "YES" or "NO".
@@ -55,14 +50,13 @@ Your answer (one word only):`;
 
         console.log(`[Validation] Destination: "${destination}" | Gemini response: "${text.trim()}"`);
 
-        // More robust checking - look for YES anywhere in response
         const normalizedText = text.trim().toUpperCase();
         const isIndia = normalizedText.includes("YES") || normalizedText === "Y";
 
         return NextResponse.json({
             destination,
             is_india: isIndia,
-            gemini_response: text.trim(), // Include for debugging
+            gemini_response: text.trim(), 
             message: isIndia
                 ? "Valid India destination"
                 : "This destination is not in India",
