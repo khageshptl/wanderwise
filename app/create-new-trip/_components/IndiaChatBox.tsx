@@ -11,22 +11,23 @@ import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import toast from 'react-hot-toast';
 import { TripInfo } from './ChatBox';
+import BudgetUi from './BudgetUi';
+import GroupSizeUi from './GroupSizeUi';
+import SelectDaysUi from './SelectDaysUi';
 
 type Message = {
     role: 'user' | 'assistant';
     content: string;
+    ui?: 'budget' | 'group_size' | 'trip_duration';
 }
 
 type ConversationStage = 'destination' | 'duration' | 'budget' | 'group_size' | 'generating' | 'complete';
-
-const BUDGET_OPTIONS = ['Budget', 'Moderate', 'Luxury'];
-const GROUP_SIZE_OPTIONS = ['Solo', 'Couple (2 people)', 'Family (3-5 people)', 'Group (6+ people)'];
 
 function IndiaChatBox() {
     const [messages, setMessages] = useState<Message[]>([
         {
             role: 'assistant',
-            content: '🇮🇳 Hi! I\'ll help you plan your perfect India trip. Where in India would you like to visit? (e.g., Goa, Jaipur, Kerala, Mumbai)'
+            content: 'Hi! I\'ll help you plan your perfect India trip. Where in India would you like to visit? (e.g., Goa, Jaipur, Kerala, Mumbai)'
         }
     ]);
     const [userInput, setUserInput] = useState<string>("");
@@ -52,8 +53,8 @@ function IndiaChatBox() {
         scrollToBottom();
     }, [messages, loading]);
 
-    const addMessage = (role: 'user' | 'assistant', content: string) => {
-        setMessages(prev => [...prev, { role, content }]);
+    const addMessage = (role: 'user' | 'assistant', content: string, ui?: 'budget' | 'group_size' | 'trip_duration') => {
+        setMessages(prev => [...prev, { role, content, ui }]);
     };
 
     const handleSend = async () => {
@@ -74,13 +75,13 @@ function IndiaChatBox() {
                 });
 
                 if (!validationResponse.data?.is_india) {
-                    addMessage('assistant', `I'm sorry, but "${input}" doesn't appear to be in India. This feature is only for India destinations. Please try another Indian city or state. 🇮🇳`);
+                    addMessage('assistant', `I'm sorry, but "${input}" doesn't appear to be in India. This feature is only for India destinations. Please try another Indian city or state.`);
                     setLoading(false);
                     return;
                 }
 
                 setDestination(input);
-                addMessage('assistant', `Great choice! ${input} is beautiful! 🌟\n\nHow many days are you planning to stay?`);
+                addMessage('assistant', `Great choice! ${input} is beautiful!\n\nHow many days are you planning to stay?`, 'trip_duration');
                 setStage('duration');
             }
             else if (stage === 'duration') {
@@ -92,7 +93,7 @@ function IndiaChatBox() {
                 }
 
                 setDuration(days.toString());
-                addMessage('assistant', `Perfect! ${days} days will be great! 📅\n\nWhat's your budget preference?`);
+                addMessage('assistant', `Perfect! ${days} days will be great!\n\nWhat's your budget preference?`, 'budget');
                 setStage('budget');
             }
             else if (stage === 'budget') {
@@ -112,7 +113,7 @@ function IndiaChatBox() {
                 }
 
                 setBudget(selectedBudget);
-                addMessage('assistant', `${selectedBudget} it is! 💰\n\nAnd how many people will be traveling?`);
+                addMessage('assistant', `${selectedBudget} it is!\n\nAnd how many people will be traveling?`, 'group_size');
                 setStage('group_size');
             }
             else if (stage === 'group_size') {
@@ -136,7 +137,7 @@ function IndiaChatBox() {
                 setGroupSize(selectedSize);
                 setStage('generating');
 
-                addMessage('assistant', `Awesome! Let me create a personalized ${duration}-day itinerary for ${selectedSize} in ${destination} with a ${budget} budget... ✨`);
+                addMessage('assistant', `Awesome! Let me create a personalized ${duration}-day itinerary for ${selectedSize} in ${destination} with a ${budget} budget...`);
 
                 // Generate itinerary
                 await generateItinerary(destination, duration, budget, selectedSize);
@@ -163,7 +164,7 @@ function IndiaChatBox() {
 
             if (response.data?.error) {
                 if (response.data.error === 'rate_limit') {
-                    addMessage('assistant', '⚠️ You\'ve used all your free credits. Upgrade to Pro for unlimited global itineraries!');
+                    addMessage('assistant', 'You\'ve used all your free credits. Upgrade to Pro for unlimited global itineraries!');
                 } else {
                     addMessage('assistant', `Error: ${response.data.message || 'Failed to generate itinerary'}`);
                 }
@@ -201,7 +202,7 @@ function IndiaChatBox() {
             tripContext?.setTripDetailInfo?.(transformedTripPlan);
 
             // Free plan: Don't save to database, just display
-            addMessage('assistant', `🎉 Your ${dest} itinerary is ready! Check it out on the right. ✨\n\n💡 Upgrade to Pro to save your trips and access global destinations!`);
+            addMessage('assistant', `Your ${dest} itinerary is ready! Check it out on the right.\n\nUpgrade to Pro to save your trips and access global destinations!`);
             toast.success('India itinerary generated! Upgrade to Pro to save trips.');
 
             setStage('complete');
@@ -209,7 +210,7 @@ function IndiaChatBox() {
         } catch (error: any) {
             console.error('Error generating itinerary:', error);
             if (error.response?.data?.error === 'rate_limit') {
-                addMessage('assistant', '⚠️ You\'ve used all your free credits. Upgrade to Pro for unlimited global itineraries!');
+                addMessage('assistant', 'You\'ve used all your free credits. Upgrade to Pro for unlimited global itineraries!');
             } else {
                 addMessage('assistant', 'Sorry, failed to generate itinerary. Please try again.');
             }
@@ -217,51 +218,37 @@ function IndiaChatBox() {
         }
     };
 
-    const renderQuickOptions = () => {
-        if (loading || stage === 'generating' || stage === 'complete') return null;
+    // Handlers for UI component selections
+    const handleDaysConfirm = (days: string) => {
+        setUserInput(days);
+        setTimeout(handleSend, 100);
+    };
 
-        if (stage === 'budget') {
-            return (
-                <div className='flex flex-wrap gap-2 mt-2'>
-                    {BUDGET_OPTIONS.map(option => (
-                        <Button
-                            key={option}
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                                setUserInput(option);
-                                setTimeout(handleSend, 100);
-                            }}
-                            className="glass-button"
-                        >
-                            {option}
-                        </Button>
-                    ))}
-                </div>
-            );
+    const handleBudgetSelect = (budgetOption: string) => {
+        // Extract just the budget level (e.g., "Cheap:Keep costs low" -> "Cheap")
+        const budget = budgetOption.split(':')[0];
+        setUserInput(budget);
+        setTimeout(handleSend, 100);
+    };
+
+    const handleGroupSizeSelect = (groupOption: string) => {
+        // Extract group type (e.g., "Me:1" -> "Me")
+        const group = groupOption.split(':')[0];
+        setUserInput(group);
+        setTimeout(handleSend, 100);
+    };
+
+    // Render generative UI components
+    const renderGenerativeUi = (ui?: string) => {
+        if (ui === 'trip_duration') {
+            return <SelectDaysUi onConfirm={handleDaysConfirm} />;
         }
-
-        if (stage === 'group_size') {
-            return (
-                <div className='flex flex-wrap gap-2 mt-2'>
-                    {GROUP_SIZE_OPTIONS.map(option => (
-                        <Button
-                            key={option}
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                                setUserInput(option);
-                                setTimeout(handleSend, 100);
-                            }}
-                            className="glass-button text-xs"
-                        >
-                            {option}
-                        </Button>
-                    ))}
-                </div>
-            );
+        else if (ui === 'budget') {
+            return <BudgetUi onSelectedOption={handleBudgetSelect} />;
         }
-
+        else if (ui === 'group_size') {
+            return <GroupSizeUi onSelectedOption={handleGroupSizeSelect} />;
+        }
         return null;
     };
 
@@ -280,6 +267,8 @@ function IndiaChatBox() {
                         <div className='flex justify-start mt-2' key={index}>
                             <div className='max-w-[95%] md:max-w-lg bg-muted dark:bg-muted/50 text-foreground px-4 py-2 rounded-3xl text-sm md:text-base whitespace-pre-line'>
                                 {msg.content}
+                                {/* Render generative UI if present */}
+                                {renderGenerativeUi(msg.ui)}
                             </div>
                         </div>
                 ))}
@@ -290,9 +279,6 @@ function IndiaChatBox() {
                 </div>}
                 <div ref={messagesEndRef} />
             </section>
-
-            {/* Quick Options */}
-            {renderQuickOptions()}
 
             {/* Input */}
             <section className='mt-2'>
